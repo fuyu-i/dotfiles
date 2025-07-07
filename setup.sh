@@ -5,20 +5,20 @@ SOURCE_CONFIG_DIR="$HOME/.config"
 LIST_FILE="config-list.txt"
 
 if [ ! -f "$LIST_FILE" ]; then
-    echo "Configuration list file not found: $LIST_FILE"
+    echo "[ERROR] - Configuration list file not found: $LIST_FILE"
     exit 1
 fi
 
-echo "Starting configuration setup from $LIST_FILE..."
+echo "[INFO] - Starting configuration setup from $LIST_FILE..."
 
 if [ ! -d "$REPO_CONFIG_DIR" ]; then
-    echo "Creating repository configuration directory: $REPO_CONFIG_DIR"
+    echo "[INFO] - Creating repository configuration directory: $REPO_CONFIG_DIR"
     mkdir -p "$REPO_CONFIG_DIR"
 fi
 
 while read -r name; do
 
-    echo "Processing: $name"
+    echo "[INFO] - Processing: $name"
 
     if [ -z "$name" ]; then
         continue
@@ -28,19 +28,19 @@ while read -r name; do
     target="$REPO_CONFIG_DIR/$name"
 
     if [ ! -d "$source" ]; then
-        echo "Skipping $name: Source directory does not exist: $source"
+        echo "[WARNING] - Skipping $name: Source directory does not exist: $source"
         continue
     fi
 
     if [ -e "$target" ]; then
-        echo "Updating: $name"
+        echo "[INFO] - Updating: $name"
         rm -rf "$target"
     else
-        echo "Creating: $name"
+        echo "[INFO] - Creating: $name"
     fi
 
     cp -r "$source" "$target"
-    echo "Copied $name from $source to $target"
+    echo "[SUCCESS] - Copied $name from $source to $target"
 done < "$LIST_FILE"
 
-echo "Configuration setup completed"
+echo "[SUCCESS] - Configuration setup completed"
